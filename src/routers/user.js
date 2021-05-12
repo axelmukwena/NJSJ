@@ -5,7 +5,13 @@ const sharp = require('sharp')
 const auth = require('../middleware/auth')
 const {users} = require('../models/user')
 
+const bodyParser = require('body-parser')
+
 const router = new express.Router()
+
+const jsonParser = bodyParser.json()
+
+const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 const path = require('path')
 // Create user route
@@ -23,12 +29,13 @@ router.post('/users', async(req,res) => {
 })
 
 // Login user
-router.post('/users/login',async (req, res) =>{
+router.post('/users/login', urlencodedParser,async (req, res) =>{
     try {
         const user = await users.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
         res.cookie('auth_token', token)
-        res.status(200).send({user , token})
+        res.redirect('/')
+        //res.status(200).send({user , token})
     } catch (error) {
         res.status(500).send('Unable to login here')
     }
@@ -42,7 +49,10 @@ router.post('/users/logout', auth, async (req, res)=>{
         })
 
         await req.user.save()
-        res.send()
+
+        res.cookie('auth_token', '')
+
+        res.redirect('/')
     } catch (error) {
         res.status(500).send()
     }
@@ -128,9 +138,10 @@ router.delete('/users/me/avatar', auth, async (req, res)=>{
 })
 
 //render user avatar
-router.get('/users/me/avatar', auth, (req, res)=>{
+router.get('/users/me/avatar/:id', auth, async (req, res)=>{
+    const user = await users.findById(req.params.id)
     try {
-        if(!req.user.avatar){
+        if(!user || !user.avatar){
             throw new Error()
         }
         res.set('Content-Type', 'image/png')

@@ -1,11 +1,12 @@
-const mongoose = require('./database/mongoose')
 const express = require('express')
-const userRoute = require('./routers/user')
-const volumeRoute = require('./routers/volume')
-const articlesRoute = require('./routers/article')
 const path = require('path')
 const hbs = require('hbs')
 const cookieParser = require('cookie-parser')
+const userRoute = require('./routers/user')
+const volumeRoute = require('./routers/volume')
+const articlesRoute = require('./routers/article')
+const mongoose = require('./database/mongoose')
+const auth = require('../src/middleware/auth')
 
 const publicPath = path.join(__dirname,'../public')
 const viewsPath = path.join(__dirname, '../templates/views')
@@ -26,7 +27,7 @@ app.use(userRoute)
 app.use(volumeRoute)
 app.use(articlesRoute)
 
-app.get('', (req, res) => {
+app.get('',(req, res) => {
     res.render('index')
 })
 
@@ -49,7 +50,7 @@ app.get('/volume/:id', (req, res) => {
 app.get('/guidelines',(req, res)=> {
     res.render('guidelines')
 })
-app.get('/submission',(req, res)=> {
+app.get('/submission', auth,(req, res)=> {
     res.render('submission')
 })
 module.exports = app

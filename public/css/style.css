@@ -179,3 +179,13 @@ img{
     color: white;
     border-color: #CC383D;
 }
+#avatarImg{
+    border-radius: 50%;
+    max-width: 45px;
+}
+#logoutBtn{
+    display: none;
+}
+#loginBtn{
+    margin: 1rem;
+}
