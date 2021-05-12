@@ -57,7 +57,7 @@ router.delete('/volumes/:id', auth, async (req, res)=>{
     }
 })
 
-// Upload volume cover
+// Upload volume 
 const upload = multer({
     limits: {
         fileSize: 10000000
@@ -96,6 +96,49 @@ router.get('/volumes/cover/:id', async (req, res)=>{
         }
         res.set('Content-Type', 'image/png')
         res.send(volume.cover)
+    } catch (error) {
+        res.status(500).send()
+    }
+})
+
+// Upload volume editorial
+const upload2 = multer({
+    limits: {
+        fileSize: 50000000
+    },
+    fileFilter(req, file, cb){
+        if(!file.originalname.toLowerCase().match(/\.pdf/)){
+            return cb(new Error('Please upload in a .pdf file'))
+        }
+        cb(undefined, true)
+    }
+})
+router.post('/volumes/editorial/:id', auth, upload2.single('file'),async (req, res) => {
+    try {        
+        const buffer = req.file.buffer
+        const volume = await volumes.findById(req.params.id)
+
+        volume.file = buffer
+
+        await volume.save()
+        res.send(volume)
+    } catch (error) {
+        res.status(500).send({error: error.message})
+    }
+},(error, req, res , next) => {
+    res.status(400).send({error: error.message})
+})
+
+// download volume editorial
+router.get('/volumes/editorial/:id', async (req, res)=>{
+    try {
+        const volume = await volumes.findById(req.params.id)
+
+        if(!volume || !volume.file){
+            return res.status(404).send()
+        }
+        res.set('Content-Type', 'application/pdf')
+        res.send(volume.file)
     } catch (error) {
         res.status(500).send()
     }

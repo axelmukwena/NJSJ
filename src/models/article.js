@@ -19,7 +19,7 @@ const articleSchema = new mongoose.Schema({
         ref: 'users'
     },
     publishedDate: {
-        type: Date
+        type: String
     },
     file: {
         type: Buffer

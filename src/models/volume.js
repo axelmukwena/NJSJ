@@ -23,6 +23,9 @@ const volumeSchema = new mongoose.Schema({
     },
     cover: {
         type: Buffer
+    },
+    file : {
+        type: Buffer
     }
 },{
     timestamps: true
@@ -43,10 +46,18 @@ volumeSchema.pre('save', async function (next){
     next()
 })
 
+//delete all articles for volume
+volumeSchema.pre('remove', async function (next){
+    await articles.deleteMany ({volume: this._id})
+    next()
+})
+
 volumeSchema.methods.toJSON = function(){
     const volumeObject = this.toObject()
 
     delete volumeObject.cover
+
+    delete volumeObject.file
 
     return volumeObject
 }
