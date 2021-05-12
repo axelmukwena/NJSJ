@@ -15,17 +15,17 @@ console.log('Client side javascript is running')
                 fetch('/articles/volume/' + data._id+'?sortBy=createdAt:asc&limit=4').then((response) => {
                     response.json().then((data) => {
                         const html = data.articles.map((art) => {
-                            return `<div class="col-md-6">
-                                        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                                            <div class="col p-4 d-flex flex-column position-static">
-                                                <strong class="d-inline-block mb-2 text-dark">${art.author}</strong>
-                                                <h3 class="mb-0">${art.title}</h3>
-                                                <div class="mb-1 text-muted">${art.publishedDate}</div>
-                                                <p class="card-text mb-auto">${art.abstract}</p>
-                                                <a href="/articles/file/${art._id}" class="stretched-link">Continue reading</a>
-                                            </div>
-                                        </div>
-                                    </div>`
+                            return `
+                                    <div class="card" style="width: auto;">
+                                    <div class="card-body">
+                                        <strong class="d-inline-block mb-2 text-dark">${art.author}</strong>
+                                        <h3 class="mb-0">${art.title}</h3>
+                                        <div class="mb-1 text-muted">${art.publishedDate}</div>
+                                        <p class="card-text mb-auto">${art.abstract}</p>
+                                        <a href="/articles/file/${art._id}" class="stretched-link">Continue reading</a>
+                                    </div>
+                                    </div>
+`
                         })
                         .join("")
                         document.querySelector('#articles').innerHTML = html

@@ -75,6 +75,10 @@ h6 {
     border-radius: 0 3px 3px 0;
 }
 
+.card{
+    margin-top: 1rem;
+}
+
 .flex-auto {
     flex: 0 0 auto;
 }

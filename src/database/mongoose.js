@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://hostman:b9982a76@143.110.157.177:27017',{
+const URL = process.env.DATABASE_URL || 'mongodb://localhost:27017/NJSJ'
+
+mongoose.connect(URL,{
     useNewUrlParser: true,
     useCreateIndex: true
 })
