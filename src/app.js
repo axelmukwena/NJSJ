@@ -78,4 +78,7 @@ app.get('/search/:term', async (req, res)=>{
 
     res.send(articleAll)
 })
+app.get('/contact', auth,(req, res)=> {
+    res.render('contact')
+})
 module.exports = app

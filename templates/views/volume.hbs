@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>volume</title>
+    <link rel="shortcut icon" href="/img/Logo 2.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
@@ -13,7 +14,7 @@
 <body onload="fetchData('{{volume}}')">
     {{>header}}
     </br>
-    <div class="container">
+    <main class="container">
         <div class="card text-white mb-3 bg-dark mb-3" style="max-width: 100%;">
             <div class="row g-0">
                 <div class="col-md-4" id="volumeCover">
@@ -29,7 +30,7 @@
         </div>
         <h3>Articles</h3>
         {{>articles}}
-    </div>
+    </main>
     </br>
     {{>footer}}
     <script src="/js/getArticles.js"></script>

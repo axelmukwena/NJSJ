@@ -29,7 +29,6 @@ const upload = multer({
 router.post('/articles/:id', auth, urlencodedParser,  upload.single('article'),async (req, res)=>{
     try {
         const buffer = req.file.buffer
-        console.log(buffer)
 
         const article = new articles({
             title: req.body.title,
@@ -42,8 +41,7 @@ router.post('/articles/:id', auth, urlencodedParser,  upload.single('article'),a
         })
 
         await article.save()
-        res.redirect('/submission')
-        
+        res.redirect(req.get('referer'))
 
     } catch (error) {
         res.status(500).send({error: error.message})
