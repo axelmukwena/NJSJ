@@ -45,6 +45,8 @@ articleSchema.methods.toJSON = function(){
     return articleObject
 }
 
+articleSchema.index({title: "text", author: "text"})
+
 const articles = mongoose.model('articles',articleSchema)
 
 module.exports = {

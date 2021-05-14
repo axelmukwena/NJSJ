@@ -6,6 +6,8 @@ const userRoute = require('./routers/user')
 const volumeRoute = require('./routers/volume')
 const articlesRoute = require('./routers/article')
 const mongoose = require('./database/mongoose')
+const {volumes} = require('./models/volume')
+const {articles} = require('./models/article')
 const auth = require('../src/middleware/auth')
 
 const publicPath = path.join(__dirname,'../public')
@@ -50,7 +52,30 @@ app.get('/volume/:id', (req, res) => {
 app.get('/guidelines',(req, res)=> {
     res.render('guidelines')
 })
+app.get('/submission/:id', auth,(req, res)=> {
+    res.render('submission',{
+        volume: req.params.id
+    })
+})
 app.get('/submission', auth,(req, res)=> {
-    res.render('submission')
+    res.render('submission',{
+        volume: req.params.id
+    })
+})
+app.get('/search', async (req, res)=>{
+    const query = {$text: {$search: req.query.term}}
+    const articleAll = await articles.find(query)
+
+    if(!articleAll) {
+        res.render('search',{result: "none"})
+    }
+    res.render('search', {result: req.query.term})
+})
+
+app.get('/search/:term', async (req, res)=>{
+    const query = {$text: {$search: req.params.term}}
+    const articleAll = await articles.find(query)
+
+    res.send(articleAll)
 })
 module.exports = app

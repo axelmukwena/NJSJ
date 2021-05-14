@@ -17,7 +17,7 @@ console.log('Client side javascript is running')
                     response.json().then((data) => {
                         const html = data.articles.map((art) => {
                             return `
-                                    <div class="card" style="width: auto;">
+                                    <div class="card" style="width: 100%;">
                                     <div class="card-body">
                                         <strong class="d-inline-block mb-2 text-dark">${art.author}</strong>
                                         <h3 class="mb-0">${art.title}</h3>

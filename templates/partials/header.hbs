@@ -6,48 +6,44 @@
                 <a class="blog-header-logo text-dark" href="/"><img src="/img/Logo 2.png" alt="NSJS" id="logo"></a>
             </div>
             <div class="col-4 text-center">
+                <form class="form-inline my-2 my-lg-0" method="GET" action="/search">
+                    <input class="form-control mr-sm-2" name="term" type="search" placeholder="Search" aria-label="Search">
+                </form>
             </div>
             <div class="col-4 d-flex justify-content-end align-items-center">
-                <a class="link-secondary" href="/search" aria-label="Search">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
-                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img"
-                        viewBox="0 0 24 24">
-                        <title>Search</title>
-                        <circle cx="10.5" cy="10.5" r="7.5"></circle>
-                        <path d="M21 21l-5.2-5.2"></path>
-                    </svg>
-                </a>
-                <a class="btn btn-sm btn-outline-secondary" id="logoutBtn" style="margin: 1rem;" onclick="logout()">logout</a>
+                <a class="btn btn-sm btn-outline-secondary" id="logoutBtn" style="margin: 1rem;"
+                    onclick="logout()">logout</a>
                 <a class="btn btn-sm btn-outline-secondary" href="/login" id="loginBtn" style="margin: 1rem;">login</a>
-                 <img class="avatar" id="avatarImg" src="/users/me/avatar/609bd54ff4316dc2a93e83d5"/>
+                <img class="avatar" id="avatarImg" src="/users/me/avatar/609bd54ff4316dc2a93e83d5" />
             </div>
         </div>
     </header>
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                aria-expanded="false">Issue</a>
-            <ul class="dropdown-menu" id="volumeLink">
-            </ul>
-        </li>
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                aria-expanded="false">Submission</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/guidelines">Guidlines</a></li>
-                <li><a class="dropdown-item" href="/submission">Online Submission</a></li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/about">About</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/contact">Contact</a>
-        </li>
-    </ul>
+    <div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">Issue</a>
+                <ul class="dropdown-menu" id="volumeLink">
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">Submission</a>
+                <ul class="dropdown-menu" id="latestSubmission">
+                    <li><a class="dropdown-item" href="/guidelines">Guidlines</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact">Contact</a>
+            </li>
+        </ul>
+    </div>
 </div>
 
 <!-- Optional JavaScript -->
@@ -64,3 +60,18 @@
 <script src="/js/getVolumes.js"></script>
 <script src="/js/authenticated.js"></script>
 <script src="/js/logout.js"></script>
+<script>
+    console.log('Client side javascript is running')
+    function fetchData2() {
+        fetch('/volumes/latest').then((response) => {
+            response.json().then((data) => {
+                const volume2 = data[0]
+
+                return volume2
+            }).then((data) => {
+                document.querySelector('#latestSubmission').insertAdjacentHTML('beforeend',`<li><a class="dropdown-item" href="/submission/${data._id}">Online Submission</a></li>`)
+            })
+        })
+    }
+    fetchData2();
+</script>

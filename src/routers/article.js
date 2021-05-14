@@ -1,6 +1,7 @@
 const {Router} = require('express')
 const express = require('express')
 const multer = require('multer')
+const bodyParser = require('body-parser')
 const {volumes} = require('../models/volume')
 const {users} = require('../models/user')
 const {articles} = require('../models/article')
@@ -8,20 +9,9 @@ const auth = require('../middleware/auth')
 
 const router = express.Router()
 
-// Add article
-router.post('/articles/:id', auth, async (req, res)=>{
-    try {
-        const article = new articles({
-            ...req.body,
-            owner: req.user._id,
-            volume: req.params.id
-        })
-        await article.save()
-        res.status(201).send(article)
-    } catch (error) {
-        res.status(500).send(error)
-    }
-})
+const jsonParser = bodyParser.json()
+
+const urlencodedParser = bodyParser.urlencoded({extended: false})
 
 // Upload article file
 const upload = multer({
@@ -35,20 +25,41 @@ const upload = multer({
         cb(undefined, true)
     }
 })
-router.post('/articles/file/:id', auth, upload.single('article'),async (req, res) => {
+// Add article
+router.post('/articles/:id', auth, urlencodedParser,  upload.single('article'),async (req, res)=>{
     try {
         const buffer = req.file.buffer
-        const article = await articles.findById(req.params.id)
+        console.log(buffer)
 
-        article.file = buffer
+        const article = new articles({
+            title: req.body.title,
+            abstract: req.body.abstract,
+            author: req.body.author,
+            publishedDate: req.body.publishedDate,
+            owner: req.user._id,
+            volume: req.params.id,
+            file: buffer
+        })
+
         await article.save()
-        res.send(article)
+        res.redirect('/submission')
+        
+
     } catch (error) {
-        res.status(500).send({error})
+        res.status(500).send({error: error.message})
     }
-},(error, req, res , next) => {
-    res.status(400).send({error: error.message})
 })
+
+// router.post('/articles/file/:id', auth, upload.single('article'),async (req, res) => {
+//     try {
+//         const buffer = req.file.buffer
+//         const article = await articles.findById(req.params
+//     } catch (error) {
+//         res.status(500).send({error})
+//     }
+// },(error, req, res , next) => {
+//     res.status(400).send({error: error.message})
+// })
 
 // download article pdf
 router.get('/articles/file/:id', async (req, res)=>{

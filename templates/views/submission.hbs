@@ -16,12 +16,10 @@
         <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
             <div class="col-md-6 px-0">
                 <h1 class="display-4 fst-italic">Online Submission</h1>
-                <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and
-                    efficiently about what’s most interesting in this post’s contents.</p>
                 <a href="/guidelines" class="btn btn-primary">View guidelines</a>
             </div>
         </div>
-        <form class="row g-3">
+        <form class="row g-3" action="/articles/{{volume}}" accept-charset="UTF-8" method="POST" novalidate enctype="multipart/form-data">
             <div class="col-md-6">
                 <label for="inputTitle" class="form-label">Title</label>
                 <input type="text" name="title" class="form-control" id="inputTitle" placeholder="Title">
@@ -32,23 +30,22 @@
             </div>
             <div class="col-12">
                 <label for="inputAstract" class="form-label">Abstract</label>
-                <textarea type="text"name="abstract" class="form-control" id="inputAstract" placeholder="Abstract"></textarea>
+                <textarea type="text" name="abstract" class="form-control" id="inputAstract"
+                    placeholder="Abstract"></textarea>
             </div>
             <div class="col-12">
                 <label for="inputDate" class="form-label">Published date</label>
                 <input type="date" name="publishedDate" class="form-control" id="inputDate">
             </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Default file input example</label>
+                <input class="form-control" name="article" type="file" id="formFile">
+            </div>
+            <div class="col-12" style="margin-top: 1em;">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </form>
-        </br>
-        <div class="form-group">
-            <label for="articleUpload">Uoload article in PDF format</label>
-            <input type="file" class="form-control-file" id="articleUpload">
-        </div>
-        </br>
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-        </form>
+    </div>
     </div>
     </br>
     {{>footer}}

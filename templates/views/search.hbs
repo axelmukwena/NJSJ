@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+    {{>header}}
+    {{>articles}}
+    </br>
+    {{>footer}}
+</body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+    crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+<script>
+    function renderResults() {
+        const data = `{{result}}`
+        fetch('/search/' + data).then((response) => {
+            response.json().then((data) => {
+                const html = data.map((art) => {
+                    return `
+                                    <div class="card" style="width: 100%;">
+                                    <div class="card-body">
+                                        <strong class="d-inline-block mb-2 text-dark">${art.author}</strong>
+                                        <h3 class="mb-0">${art.title}</h3>
+                                        <div class="mb-1 text-muted">${art.publishedDate}</div>
+                                        <p class="card-text mb-auto">${art.abstract}</p>
+                                        <a href="/articles/file/${art._id}" class="stretched-link">Continue reading</a>
+                                    </div>
+                                    </div>
+`
+                })
+                    .join("")
+                document.querySelector('#articles').innerHTML = html
+            })
+        })
+
+    }
+    renderResults()
+</script>
+
+</html>
