@@ -20,27 +20,27 @@
                 <p class="lead my-3"></p>
             </div>
         </div>
-        <form>
+        <form action="/contact" method="POST" accept-charset="UTF-8">
             <div class="row">
                 <div class="col">
-                    <label for="firstname">First Name</label>
-                    <input type="text" id="firstname" class="form-control" placeholder="First name">
+                    <label for="inputFirstname">First Name</label>
+                    <input type="text" id="inputFirstname" class="form-control" placeholder="First name" required>
                 </div>
                 <div class="col">
-                    <label for="surname">Surname</label>
-                    <input type="text"  id="surname" class="form-control" placeholder="Last name">
+                    <label for="inputSurname">Surname</label>
+                    <input type="text"  id="inputSurname" class="form-control" placeholder="Surname" required>
                 </div>
             </div>
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                    placeholder="Enter email">
+                <label for="inputEmail">Email address</label>
+                <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+                    placeholder="email" required>
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                     else.</small>
             </div>
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Message</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <label for="inputMessage">Message</label>
+                <textarea class="form-control" name="message" id="inputMessage" rows="3" required></textarea>
             </div>
             <br>
             <button type="submit" class="btn btn-primary">Submit</button>

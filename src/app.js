@@ -2,6 +2,8 @@ const express = require('express')
 const path = require('path')
 const hbs = require('hbs')
 const cookieParser = require('cookie-parser')
+const bodyParser =require('body-parser')
+const nodemailer = require('nodemailer')
 const userRoute = require('./routers/user')
 const volumeRoute = require('./routers/volume')
 const articlesRoute = require('./routers/article')
@@ -29,6 +31,16 @@ app.use(userRoute)
 app.use(volumeRoute)
 app.use(articlesRoute)
 
+const urlencodedParser = bodyParser.urlencoded({extended: false})
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'elkarloshunkbloodz@gmail.com',
+        pass: '0816701534'
+    }
+})
+
 app.get('',(req, res) => {
     res.render('index')
 })
@@ -52,15 +64,8 @@ app.get('/volume/:id', (req, res) => {
 app.get('/guidelines',(req, res)=> {
     res.render('guidelines')
 })
-app.get('/submission/:id', auth,(req, res)=> {
-    res.render('submission',{
-        volume: req.params.id
-    })
-})
-app.get('/submission', auth,(req, res)=> {
-    res.render('submission',{
-        volume: req.params.id
-    })
+app.get('/submission',(req, res)=> {
+    res.render('submission')
 })
 app.get('/search', async (req, res)=>{
     const query = {$text: {$search: req.query.term}}
@@ -78,7 +83,40 @@ app.get('/search/:term', async (req, res)=>{
 
     res.send(articleAll)
 })
-app.get('/contact', auth,(req, res)=> {
+app.get('/contact',(req, res)=> {
     res.render('contact')
+})
+app.post('/contact', urlencodedParser, (req, res)=>{
+    try {
+        const today = Date.now()
+        const date = new Date(today)
+
+        const mailOptions = {
+            from: 'elkarloshunkbloodz@gmail.com',
+            to: 'sibalatanics@outlook.com',
+            subject: 'Sending Email using node.js',
+            text: `
+                From: ${req.body.email}
+
+                Name: ${req.body.firstname} ${req.body.surname}
+
+                Message: ${req.body.message}
+
+                Sent on: ${date}
+            `
+        }
+        
+        transporter.sendMail(mailOptions, (error, info) => {
+            if(error) res.render('404')
+            else res.render('contact')
+        })
+
+    } catch (error) {
+        
+    }
+})
+
+app.get('*', (req, res)=>{
+    res.render('404')
 })
 module.exports = app

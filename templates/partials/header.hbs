@@ -34,6 +34,7 @@
                     aria-expanded="false">Submission</a>
                 <ul class="dropdown-menu" id="latestSubmission">
                     <li><a class="dropdown-item" href="/guidelines">Guidlines</a></li>
+                    <li><a class="dropdown-item" href="/submission">Submission</a></li>
                 </ul>
             </li>
             <li class="nav-item">
@@ -60,18 +61,3 @@
 <script src="/js/getVolumes.js"></script>
 <script src="/js/authenticated.js"></script>
 <script src="/js/logout.js"></script>
-<script>
-    console.log('Client side javascript is running')
-    function fetchData2() {
-        fetch('/volumes/latest').then((response) => {
-            response.json().then((data) => {
-                const volume2 = data[0]
-
-                return volume2
-            }).then((data) => {
-                document.querySelector('#latestSubmission').insertAdjacentHTML('beforeend',`<li><a class="dropdown-item" href="/submission/${data._id}">Online Submission</a></li>`)
-            })
-        })
-    }
-    fetchData2();
-</script>
