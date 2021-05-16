@@ -39,7 +39,7 @@ const upload = multer({
 router.post('/articles/publish/:id', auth, urlencodedParser,  upload.single('article'),async (req, res)=>{
     try {
         const buffer = req.file.buffer
-        const volume = volumes.findById(req.params.id)
+        const volume = await volumes.findById(req.params.id)
 
         const article = new articles({
             title: req.body.title,
