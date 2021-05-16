@@ -87,9 +87,17 @@ router.post('/volumes/publish', auth, urlencodedParser, uploads ,async (req, res
         const coverBuffer = req.files.cover[0].buffer
         const editorialBuffer= req.files.editorial[0].buffer
         const currentVol = await volumes.findOne().sort({issue: -1})
+        let nextVol = 0
+
+        if(!currentVol)
+            nextVol++
+        else {
+            nextVol = currentVol.issue + 1
+        }
+
 
         const volume = await new volumes({
-            issue: currentVol.issue+1,
+            issue: nextVol,
             title: req.body.title,
             abstract: req.body.abstract,
             publishedDate: req.body.publishedDate,
