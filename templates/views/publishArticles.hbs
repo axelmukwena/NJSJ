@@ -78,4 +78,26 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+<script>
+    let volume = {}
+function fetchData() {
+    fetch('/volumes/latest').then((response) => {
+        response.json().then((data) => {
+            volume = data[0]
+
+            return volume
+        }).then((data) => {
+            document.querySelector('#latestVolLink').insertAdjacentHTML('beforeend', `<a href="/volumes/editorial/${data._id}" class="btn btn-primary" id="latestLink">Download editorial</a> <a href="/volume/${data._id}" class="btn btn-primary" id="latestLink">View Articles</a>`)
+            document.querySelector('#volumeCover').innerHTML = `<a href="/volumes/cover/${data._id}"><img src="/volumes/cover/${data._id}" alt=""></a>`
+            document.querySelector('#LatestVolume').innerHTML = `<h1>${data.name}</h1>`
+            document.querySelector('#LatestVolumeTitle').innerHTML = `<h2>${data.title}</h2>`
+            document.querySelector('#datePublished').textContent = data.publishedDate
+            document.querySelector('#volumeAbstract').textContent = data.abstract
+        })
+    })
+}
+
+fetchData();
+</script>
+
 </html>
