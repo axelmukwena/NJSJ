@@ -29,7 +29,7 @@ const articleSchema = new mongoose.Schema({
         required: true,
         ref: 'volumes'
     },
-    publish: {
+    feature: {
         type: Boolean,
         default: true
     }

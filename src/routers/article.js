@@ -34,39 +34,31 @@ const upload = multer({
         cb(undefined, true)
     }
 })
+
 // Add article
-// router.post('/articles/:id', auth, urlencodedParser,  upload.single('article'),async (req, res)=>{
-//     try {
-//         const buffer = req.file.buffer
+router.post('/articles/publish/:id', auth, urlencodedParser,  upload.single('article'),async (req, res)=>{
+    try {
+        const buffer = req.file.buffer
+        const volume = volumes.findById(req.params.id)
 
-//         const article = new articles({
-//             title: req.body.title,
-//             abstract: req.body.abstract,
-//             author: req.body.author,
-//             publishedDate: req.body.publishedDate,
-//             owner: req.user._id,
-//             volume: req.params.id,
-//             file: buffer
-//         })
+        const article = new articles({
+            title: req.body.title,
+            abstract: req.body.abstract,
+            author: req.body.author,
+            publishedDate: volume.publishedDate,
+            owner: req.user._id,
+            volume: req.params.id,
+            feature: req.body.feature === 'Yes',
+            file: buffer
+        })
 
-//         await article.save()
-//         res.redirect(req.get('referer'))
+        await article.save()
+        res.redirect(req.get('referer'))
 
-//     } catch (error) {
-//         res.status(500).send({error: error.message})
-//     }
-// })
-
-// router.post('/articles/file/:id', auth, upload.single('article'),async (req, res) => {
-//     try {
-//         const buffer = req.file.buffer
-//         const article = await articles.findById(req.params
-//     } catch (error) {
-//         res.status(500).send({error})
-//     }
-// },(error, req, res , next) => {
-//     res.status(400).send({error: error.message})
-// })
+    } catch (error) {
+        res.status(500).send({error: error.message})
+    }
+})
 
 // download article pdf
 router.get('/articles/file/:id', async (req, res)=>{
@@ -88,8 +80,8 @@ router.get('/articles/volume/:id', async(req, res)=>{
     const match = {}
     let sort = {}
 
-    if(req.query.publish){
-        match.publish = req.query.publish === 'true'
+    if(req.query.feature){
+        match.feature = req.query.feature === 'true'
     }
 
     if(req.query.sortBy){

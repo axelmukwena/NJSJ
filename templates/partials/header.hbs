@@ -37,6 +37,13 @@
                     <li><a class="dropdown-item" href="/submission">Submission</a></li>
                 </ul>
             </li>
+            <li class="nav-item dropdown" id="publish" style="display: none;">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                    aria-expanded="false">Publish</a>
+                <ul class="dropdown-menu" id="latestPublish">
+                    <li><a class="dropdown-item" href="/publish/volume">Publish Volume</a></li>
+                </ul>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/about">About</a>
             </li>
@@ -61,3 +68,19 @@
 <script src="/js/getVolumes.js"></script>
 <script src="/js/authenticated.js"></script>
 <script src="/js/logout.js"></script>
+<script>
+    let volume2 = {}
+function fetchData() {
+    fetch('/volumes/latest').then((response) => {
+        response.json().then((data) => {
+            volume2 = data[0]
+
+            return volume2
+        }).then((data) => {
+            document.querySelector('#latestPublish').insertAdjacentHTML('beforeend', `<li><a class="dropdown-item" href="/publish/article/${data._id}">Publish Articles</a></li>`)
+        })
+    })
+}
+
+fetchData();
+</script>

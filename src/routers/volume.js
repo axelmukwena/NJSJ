@@ -2,10 +2,13 @@ const {Router} = require('express')
 const express = require('express')
 const multer = require('multer')
 const sharp = require('sharp')
+const bodyParser = require('body-parser')
 const {volumes} = require('../models/volume')
 const auth = require('../middleware/auth')
 
 const router = express.Router()
+const urlencodedParser = bodyParser.urlencoded({extended: false})
+
 
 // Add volume
 router.post('/volumes', auth, async(req, res)=>{
@@ -60,25 +63,41 @@ router.delete('/volumes/:id', auth, async (req, res)=>{
 // Upload volume 
 const upload = multer({
     limits: {
-        fileSize: 10000000
+        fileSize: 50000000
     },
     fileFilter(req, file, cb){
-        if(!file.originalname.toLowerCase().match(/\.(jpg|jpeg|png)$/)){
-            return cb(new Error('Please upload an image file'))
+        if(!file.originalname.toLowerCase().match(/\.(jpg|jpeg|png|pdf)$/)){
+            return cb(new Error('Please upload an image file for the cover and pdf for the editorial'))
         }
         cb(undefined, true)
     }
 })
-router.post('/volumes/cover/:id', auth, upload.single('cover'),async (req, res) => {
+
+const uploads = upload.fields([{
+    name: 'cover',
+    maxCount: 1
+},
+{
+    name: 'editorial',
+    maxCount: 1
+}])
+
+router.post('/volumes/publish', auth, urlencodedParser, uploads ,async (req, res) => {
     try {
-        const buffer = await sharp(req.file.buffer).png().toBuffer()
-        
-        const volume = await volumes.findById(req.params.id)
+        const coverBuffer = req.files.cover[0].buffer
+        const editorialBuffer= req.files.editorial[0].buffer
+        const currentVol = await volumes.findOne().sort({issue: -1})
 
-        volume.cover = buffer
-
+        const volume = await new volumes({
+            issue: currentVol.issue+1,
+            title: req.body.title,
+            abstract: req.body.abstract,
+            publishedDate: req.body.publishedDate,
+            cover: coverBuffer,
+            file: editorialBuffer
+        })
         await volume.save()
-        res.send(volume)
+        res.redirect('/publish/volume')
     } catch (error) {
         res.status(500).send({error: error.message})
     }
@@ -100,34 +119,21 @@ router.get('/volumes/cover/:id', async (req, res)=>{
         res.status(500).send()
     }
 })
+// router.post('/volumes/editorial/:id', auth, upload2.single('file'),async (req, res) => {
+//     try {        
+//         const buffer = req.file.buffer
+//         const volume = await volumes.findById(req.params.id)
 
-// Upload volume editorial
-const upload2 = multer({
-    limits: {
-        fileSize: 50000000
-    },
-    fileFilter(req, file, cb){
-        if(!file.originalname.toLowerCase().match(/\.pdf/)){
-            return cb(new Error('Please upload in a .pdf file'))
-        }
-        cb(undefined, true)
-    }
-})
-router.post('/volumes/editorial/:id', auth, upload2.single('file'),async (req, res) => {
-    try {        
-        const buffer = req.file.buffer
-        const volume = await volumes.findById(req.params.id)
+//         volume.file = buffer
 
-        volume.file = buffer
-
-        await volume.save()
-        res.send(volume)
-    } catch (error) {
-        res.status(500).send({error: error.message})
-    }
-},(error, req, res , next) => {
-    res.status(400).send({error: error.message})
-})
+//         await volume.save()
+//         res.send(volume)
+//     } catch (error) {
+//         res.status(500).send({error: error.message})
+//     }
+// },(error, req, res , next) => {
+//     res.status(400).send({error: error.message})
+// })
 
 // download volume editorial
 router.get('/volumes/editorial/:id', async (req, res)=>{

@@ -116,6 +116,16 @@ app.post('/contact', urlencodedParser, (req, res)=>{
     }
 })
 
+app.get('/publish/volume', auth, (req, res) =>{
+    res.render('publishVolume')
+})
+
+app.get('/publish/article/:id', auth, (req, res) => {
+    res.render('publishArticles', {
+        volume: req.params.id
+    })
+})
+
 app.get('*', (req, res)=>{
     res.render('404')
 })
