@@ -17,8 +17,8 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'elkarloshunkbloodz@gmail.com',
-        pass: '0816701534'
+        user: 'namsocialjustice@gmail.com',
+        pass: 'Namsocial@123'
     }
 })
 
@@ -133,32 +133,34 @@ router.post('/articles/submit', urlencodedParser, upload.single('article'), asyn
         const buffer = req.file.buffer
         const today = Date.now()
         const date = new Date(today)
+        const maillist = ['vivaworkers@gmail.com', 'rinaanim@yahoo.com']
 
-
-        var mailOptions = {
-            from: 'elkarloshunkbloodz@gmail.com',
-            to: 'sibalatanics@outlook.com',
-            subject: 'Article Submission',
-            text: `
-                From: ${req.body.email}
-                Title: ${req.body.title}
-                Author: ${req.body.author}
-                Abstact: ${req.body.abstract}
-                Submission Date: ${date}
-            `,
-            attachments: [
-                {
-                    filename: `${req.body.title}.pdf`,
-                    content: buffer,
-                    constentType: 'application/pdf'
-                }
-            ]
-        }
-        transporter.sendMail(mailOptions, (error, info)=>{
-            if(!error)
-                res.redirect('/submission')
-            else
-                console.log(error)
+        maillist.forEach((to)=>{
+            var mailOptions = {
+                from: 'namsocialjustice@gamil.com',
+                to: to,
+                subject: 'Article Submission',
+                text: `
+                    From: ${req.body.email}
+                    Title: ${req.body.title}
+                    Author: ${req.body.author}
+                    Abstact: ${req.body.abstract}
+                    Submission Date: ${date}
+                `,
+                attachments: [
+                    {
+                        filename: `${req.body.title}.pdf`,
+                        content: buffer,
+                        constentType: 'application/pdf'
+                    }
+                ]
+            }
+            transporter.sendMail(mailOptions, (error, info)=>{
+                if(!error)
+                    res.redirect('/submission')
+                else
+                    console.log(error)
+            })
         })
     } catch (error) {
         

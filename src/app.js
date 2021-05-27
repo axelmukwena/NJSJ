@@ -36,8 +36,8 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'elkarloshunkbloodz@gmail.com',
-        pass: '0816701534'
+        user: 'namsocialjustice@gmail.com',
+        pass: 'Namsocial@123'
     }
 })
 
@@ -90,25 +90,28 @@ app.post('/contact', urlencodedParser, (req, res)=>{
     try {
         const today = Date.now()
         const date = new Date(today)
+        const maillist = ['vivaworkers@gmail.com', 'rinaanim@yahoo.com']
 
-        const mailOptions = {
-            from: 'elkarloshunkbloodz@gmail.com',
-            to: 'sibalatanics@outlook.com',
-            subject: 'Sending Email using node.js',
-            text: `
-                From: ${req.body.email}
-
-                Name: ${req.body.firstname} ${req.body.surname}
-
-                Message: ${req.body.message}
-
-                Sent on: ${date}
-            `
-        }
-        
-        transporter.sendMail(mailOptions, (error, info) => {
-            if(error) res.render('404')
-            else res.render('contact')
+        maillist.forEach((to)=>{
+            const mailOptions = {
+                from: 'namsocialjustice@gmail.com',
+                to: to,
+                subject: 'Query from namsocialjustice.org',
+                text: `
+                    From: ${req.body.email}
+    
+                    Name: ${req.body.firstname} ${req.body.surname}
+    
+                    Message: ${req.body.message}
+    
+                    Sent on: ${date}
+                `
+            }
+            
+            transporter.sendMail(mailOptions, (error, info) => {
+                if(error) res.render('404')
+                else res.render('contact')
+            })
         })
 
     } catch (error) {
