@@ -13,7 +13,7 @@ function fetchData() {
             document.querySelector('#datePublished').textContent = data.publishedDate
             document.querySelector('#volumeAbstract').textContent = data.abstract
             document.querySelector('#latestButton').innerHTML = `<a href="/volume/${data._id}" class="btn btn-primary">View all</a>`
-            fetch('/articles/volume/' + data._id + '?sortBy=createdAt:asc&limit=4&feature=true').then((response) => {
+            fetch('/articles/volume/' + data._id + '?sortBy=createdAt:asc&feature=true').then((response) => {
                 response.json().then((data) => {
                     const html = data.articles.map((art) => {
                         return `
