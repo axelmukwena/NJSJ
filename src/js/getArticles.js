@@ -2,7 +2,7 @@ function fetchData(volume){
     fetch('/articles/volume/'+volume).then((response)=>{
         response.json().then((data)=>{
             const volumeName = data.volume.name
-            document.querySelector('#volumeName').insertAdjacentHTML('beforeend',`<a href="/volumes/editorial/${data.volume._id}" class="btn btn-primary" id="latestLink">Download editorial</a>`)
+            document.querySelector('#volumeName').insertAdjacentHTML('beforeend',`<a href="/volumes/editorial/${data.volume._id}" class="btn btn-primary" id="latestLink">Download Volume 1</a>`)
             document.querySelector('#volumeName').insertAdjacentHTML('afterbegin',`<h1 class="card-title">${volumeName}</h1> <h2 class="card-title">${data.volume.title}</h2>`)
             document.querySelector('#volumeCover').innerHTML = `<a href="/volumes/cover/${data.volume._id}"><img src="/volumes/cover/${data.volume._id}" alt=""></a>`
             document.querySelector('#datePublished').textContent =  data.volume.publishedDate
