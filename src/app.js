@@ -90,7 +90,7 @@ app.post('/contactus', urlencodedParser, (req, res)=>{
     try {
         const today = Date.now()
         const date = new Date(today)
-        const maillist = ['vivaworkers@gmail.com', 'rinaanim@yahoo.com']
+        const maillist = ['njsjnam@gmail.com']
 
         maillist.forEach((to)=>{
             const mailOptions = {
