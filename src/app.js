@@ -37,7 +37,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'namsocialjustice@gmail.com',
-        pass: 'Namsocial@123'
+        pass: 'thhqujpnjhnyibws'
     }
 })
 
@@ -90,7 +90,7 @@ app.post('/contactus', urlencodedParser, (req, res)=>{
     try {
         const today = Date.now()
         const date = new Date(today)
-        const maillist = ['sibalatanics@outlook.com', 'elkarloshunkbloodz@gmail.com']
+        const maillist = ['vivaworkers@gmail.com', 'rinaanim@yahoo.com']
 
         maillist.forEach((to)=>{
             const mailOptions = {
@@ -108,9 +108,9 @@ app.post('/contactus', urlencodedParser, (req, res)=>{
                 `
             }
             
-             transporter.sendMail(mailOptions, (error, info) => {
-                if(error) return res.render('404')
-                else return res.render('contact')
+            transporter.sendMail(mailOptions, (error, info) => {
+                if(error) res.render('404')
+                else res.render('contact')
             })
         })
 
