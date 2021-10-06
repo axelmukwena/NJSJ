@@ -86,11 +86,11 @@ app.get('/search/:term', async (req, res)=>{
 app.get('/contact',(req, res)=> {
     res.render('contact')
 })
-app.post('/contact', urlencodedParser, (req, res)=>{
+app.post('/contactus', urlencodedParser, (req, res)=>{
     try {
         const today = Date.now()
         const date = new Date(today)
-        const maillist = ['vivaworkers@gmail.com', 'rinaanim@yahoo.com']
+        const maillist = ['sibalatanics@outlook.com', 'elkarloshunkbloodz@gmail.com']
 
         maillist.forEach((to)=>{
             const mailOptions = {
@@ -108,9 +108,9 @@ app.post('/contact', urlencodedParser, (req, res)=>{
                 `
             }
             
-            transporter.sendMail(mailOptions, (error, info) => {
-                if(error) res.render('404')
-                else res.render('contact')
+             transporter.sendMail(mailOptions, (error, info) => {
+                if(error) return res.render('404')
+                else return res.render('contact')
             })
         })
 
