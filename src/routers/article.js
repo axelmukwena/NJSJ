@@ -18,7 +18,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'namsocialjustice@gmail.com',
-        pass: 'Namsocial@123'
+        pass: 'thhqujpnjhnyibws'
     }
 })
 
@@ -133,7 +133,7 @@ router.post('/articles/submit', urlencodedParser, upload.single('article'), asyn
         const buffer = req.file.buffer
         const today = Date.now()
         const date = new Date(today)
-        const maillist = ['vivaworkers@gmail.com', 'rinaanim@yahoo.com']
+        const maillist = ['njsjnam@gmail.com']
 
         maillist.forEach((to)=>{
             var mailOptions = {
