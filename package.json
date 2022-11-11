@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "This is the node.js backend for the Namibian Social Justice Website",
   "main": "index.js",
+  "engines": {
+    "npm": ">=8.0.0 <9.0.0",
+    "node": ">=16.0.0 <17.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "env-cmd -f ./config/dev.env nodemon src/index.js -e js,hbs",
