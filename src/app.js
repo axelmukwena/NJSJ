@@ -39,7 +39,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "namsocialjustice@gmail.com",
+    user: process.env.ADMIN_EMAIL,
     pass: "thhqujpnjhnyibws",
   },
 });
@@ -55,6 +55,11 @@ app.get("/about", (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login");
 });
+
+app.get("/users/login", (req, res) => {
+  res.redirect("/login");
+});
+
 app.get("/signup", (req, res) => {
   res.render("signup");
 });
@@ -93,11 +98,12 @@ app.post("/contactus", urlencodedParser, (req, res) => {
   try {
     const today = Date.now();
     const date = new Date(today);
-    const maillist = ["njsjnam@gmail.com"];
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const maillist = [adminEmail];
 
     maillist.forEach((to) => {
       const mailOptions = {
-        from: "namsocialjustice@gmail.com",
+        from: adminEmail,
         to: to,
         subject: "Query from namsocialjustice.org",
         text: `

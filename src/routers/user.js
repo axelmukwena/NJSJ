@@ -28,6 +28,14 @@ router.post("/users", async (req, res) => {
   }
 });
 
+const handleLoginError = (res, req, errorMessage) => {
+  res.render("login", {
+    email: req.body.email,
+    password: req.body.password,
+    errorMessage,
+  });
+};
+
 // Login user
 router.post("/users/login", urlencodedParser, async (req, res) => {
   try {
@@ -35,12 +43,18 @@ router.post("/users/login", urlencodedParser, async (req, res) => {
       req.body.email,
       req.body.password
     );
+
+    if (!user) {
+      handleLoginError(res, req, "Incorrect email or password");
+      return;
+    }
+
     const token = await user.generateAuthToken();
     res.cookie("auth_token", token);
     res.redirect("/");
-    //res.status(200).send({user , token})
   } catch (error) {
-    res.status(500).send("Unable to login here");
+    console.log("error:", error);
+    handleLoginError(res, req, "Error logging in");
   }
 });
 
