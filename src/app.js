@@ -52,6 +52,10 @@ app.get("/about", (req, res) => {
   res.render("about");
 });
 
+app.get("/call-for-papers", (req, res) => {
+  res.render("callForPapers");
+});
+
 app.get("/login", (req, res) => {
   res.render("login");
 });
