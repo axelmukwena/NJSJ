@@ -1,15 +1,30 @@
-function fetchData(volume){
-    fetch('/articles/volume/'+volume).then((response)=>{
-        response.json().then((data)=>{
-            const volumeName = data.volume.name
-            document.querySelector('#volumeName').insertAdjacentHTML('beforeend',`<a href="/volumes/editorial/${data.volume._id}" class="btn btn-primary" id="latestLink">Download Volume 1</a>`)
-            document.querySelector('#volumeName').insertAdjacentHTML('afterbegin',`<h1 class="card-title">${volumeName}</h1> <h2 class="card-title">${data.volume.title}</h2>`)
-            document.querySelector('#volumeCover').innerHTML = `<a href="/volumes/cover/${data.volume._id}"><img src="/volumes/cover/${data.volume._id}" alt=""></a>`
-            document.querySelector('#datePublished').textContent =  data.volume.publishedDate
-            document.querySelector('#volumeAbstract').textContent = data.volume.abstract
+function fetchData(volume) {
+  fetch("/articles/volume/" + volume).then((response) => {
+    response.json().then((data) => {
+      const volumeName = data.volume.name;
+      document
+        .querySelector("#volumeName")
+        .insertAdjacentHTML(
+          "beforeend",
+          `<a href="/volumes/editorial/${data.volume._id}" class="btn btn-primary" id="latestLink">Download Volume ${data.issue}</a>`
+        );
+      document
+        .querySelector("#volumeName")
+        .insertAdjacentHTML(
+          "afterbegin",
+          `<h1 class="card-title">${volumeName}</h1> <h2 class="card-title">${data.volume.title}</h2>`
+        );
+      document.querySelector(
+        "#volumeCover"
+      ).innerHTML = `<a href="/volumes/cover/${data.volume._id}"><img src="/volumes/cover/${data.volume._id}" alt=""></a>`;
+      document.querySelector("#datePublished").textContent =
+        data.volume.publishedDate;
+      document.querySelector("#volumeAbstract").textContent =
+        data.volume.abstract;
 
-           const html = data.articles.map((article)=>{
-                return `<div class="accordion-item">
+      const html = data.articles
+        .map((article) => {
+          return `<div class="accordion-item">
                             <h2 class="accordion-header" id="heading${article._id}">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${article._id}"
                                     aria-expanded="true" aria-controls="collapse${article._id}">
@@ -25,11 +40,11 @@ function fetchData(volume){
                                     <a href="/articles/file/${article._id}">Continue reading</a>
                                 </div>
                             </div>
-                        </div>`
-            })
-            .join("")
-
-            document.querySelector('#accordionExample').innerHTML = html
+                        </div>`;
         })
-    })
+        .join("");
+
+      document.querySelector("#accordionExample").innerHTML = html;
+    });
+  });
 }
