@@ -5,8 +5,6 @@ function fetchData() {
       .json()
       .then((data) => {
         volume = data[0];
-        console.log("volume:", volume);
-
         return volume;
       })
       .then((data) => {
