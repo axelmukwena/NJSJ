@@ -1,35 +1,36 @@
-let volume = {};
+let volumeTwo = {};
 function fetchData() {
   fetch("/volumes/latest").then((response) => {
     response
       .json()
       .then((data) => {
-        volume = data[0];
-        console.log("volume:", volume);
+        volumeTwo = data[1];
+        console.log("volume:", volumeTwo);
 
-        return volume;
+        return volumeTwo;
       })
       .then((data) => {
         document
-          .querySelector("#latestVolLink")
+          .querySelector("#latestVolLinkTwo")
           .insertAdjacentHTML(
             "beforeend",
-            `<a href="/volumes/editorial/${data._id}" class="btn btn-primary" id="latestLink">Download Volume ${data.issue}</a> <a href="/volume/${data._id}" class="btn btn-primary" id="latestLink">View Articles</a>`
+            `<a href="/volumes/editorial/${data._id}" class="btn btn-primary" id="latestLinkTwo">Download Volume ${data.issue}</a> <a href="/volume/${data._id}" class="btn btn-primary" id="latestLinkTwo">View Articles</a>`
           );
         document.querySelector(
-          "#volumeCover"
+          "#volumeCoverTwo"
         ).innerHTML = `<a href="/volumes/cover/${data._id}"><img src="/volumes/cover/${data._id}" alt=""></a>`;
         document.querySelector(
-          "#LatestVolume"
+          "#LatestVolumeTwo"
         ).innerHTML = `<h1>${data.name}</h1>`;
         document.querySelector(
-          "#LatestVolumeTitle"
+          "#LatestVolumeTitleTwo"
         ).innerHTML = `<h2>${data.title}</h2>`;
-        document.querySelector("#datePublished").textContent =
+        document.querySelector("#datePublishedTwo").textContent =
           data.publishedDate;
-        document.querySelector("#volumeAbstract").textContent = data.abstract;
+        document.querySelector("#volumeAbstractTwo").textContent =
+          data.abstract;
         document.querySelector(
-          "#latestButton"
+          "#latestButtonTwo"
         ).innerHTML = `<a href="/volume/${data._id}" class="btn btn-primary">View all</a>`;
         fetch(
           "/articles/volume/" + data._id + "?sortBy=createdAt:asc&feature=true"
@@ -50,7 +51,7 @@ function fetchData() {
 `;
               })
               .join("");
-            document.querySelector("#articles").innerHTML = html;
+            document.querySelector("#articlesTwo").innerHTML = html;
           });
         });
       });

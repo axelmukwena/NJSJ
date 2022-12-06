@@ -22,7 +22,7 @@ router.post("/volumes", auth, async (req, res) => {
 
 // get latest volume
 router.get("/volumes/latest", async (req, res) => {
-  const volume = await volumes.find().sort({ issue: -1 }).limit(1);
+  const volume = await volumes.find().sort({ issue: -1 }).limit(2);
   if (!volume) return res.status(404).send();
   res.send(volume);
 });
