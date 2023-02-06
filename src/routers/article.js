@@ -14,11 +14,14 @@ const jsonParser = bodyParser.json();
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-const transporter = nodemailer.createTransport({
+const googleUserEmail = process.env.GOOGLE_MAILER_EMAIL;
+const googleUserPassword = process.env.GOOGLE_MAILER_PASSWORD;
+
+let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.ADMIN_EMAIL,
-    pass: "thhqujpnjhnyibws",
+    user: googleUserEmail,
+    pass: googleUserPassword,
   },
 });
 
@@ -150,14 +153,9 @@ router.post(
         var mailOptions = {
           from: adminEmail,
           to: to,
-          subject: "Article Submission",
-          text: `
-                    From: ${req.body.email}
-                    Title: ${req.body.title}
-                    Author: ${req.body.author}
-                    Abstact: ${req.body.abstract}
-                    Submission Date: ${date}
-                `,
+          subject:
+            "Article Submission | Namibian Journal of Social Justice (NJSJ)",
+          text: `\nFrom: ${req.body.email}\nTitle: ${req.body.title}\nAuthor: ${req.body.author}\nAbstact: ${req.body.abstract}\nSubmission Date: ${date}\n`,
           attachments: [
             {
               filename: `${req.body.title}.pdf`,

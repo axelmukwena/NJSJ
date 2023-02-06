@@ -5,12 +5,13 @@ const express = require("express");
 const path = require("path");
 const hbs = require("hbs");
 const cookieParser = require("cookie-parser");
+const mongoose = require("./database/mongoose");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const userRoute = require("./routers/user");
 const volumeRoute = require("./routers/volume");
 const articlesRoute = require("./routers/article");
-const mongoose = require("./database/mongoose");
+
 const { volumes } = require("./models/volume");
 const { articles } = require("./models/article");
 const auth = require("../src/middleware/auth");
@@ -36,11 +37,14 @@ app.use(articlesRoute);
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-const transporter = nodemailer.createTransport({
+const googleUserEmail = process.env.GOOGLE_MAILER_EMAIL;
+const googleUserPassword = process.env.GOOGLE_MAILER_PASSWORD;
+
+let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.ADMIN_EMAIL,
-    pass: "thhqujpnjhnyibws",
+    user: googleUserEmail,
+    pass: googleUserPassword,
   },
 });
 
